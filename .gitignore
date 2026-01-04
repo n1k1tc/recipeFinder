@@ -1,14 +1,19 @@
-# Node
-node_modules
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
+client/.env
+server/.env
 
 # Logs
 logs
 *.log
 
-# Build
+# Build output
 dist
 build
 
-# OS
+# OS / Editor
 .DS_Store
+.vscode/
