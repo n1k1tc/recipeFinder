@@ -1,0 +1,750 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+:root {
+  /* Green Color Theme */
+  --primary-color: #2E8B57;      /* brand - main identity */
+  --primary-dark: #26734D;       /* hover / emphasis */
+  --primary-light: #4CAF50;      /* success / active */
+  --soft-green-bg: #F0F9F4;      /* sections, cards */
+  --neutral-border: #E2E8F0;     /* dividers */
+  
+  /* Supporting colors */
+  --secondary-color: #2E8B57;    /* Using primary as secondary */
+  --text-dark: #1A202C;
+  --text-light: #718096;
+  --bg-white: #FFFFFF;
+  --bg-light: #F8F9FA;
+  --shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 25px rgba(46, 139, 87, 0.15);
+  --shadow-green: 0 4px 12px rgba(46, 139, 87, 0.2);
+}
+
+/* Main wrapper for proper centering */
+.auth-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: var(--bg-light);
+}
+
+/* Animated Background with Food Icons */
+.background-elements {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.background-elements::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, rgba(46, 139, 87, 0.05) 0%, rgba(76, 175, 80, 0.05) 100%);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation: float 20s infinite linear;
+}
+
+.background-elements::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.03) 0%, rgba(46, 139, 87, 0.03) 100%);
+  border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+  animation: float 25s infinite linear reverse;
+}
+
+/* Floating Food Icons */
+.floating-food-icon {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.1;
+  animation: floatIcon 20s infinite linear;
+  pointer-events: none;
+}
+
+.floating-food-icon:nth-child(1) {
+  background-image: url('/icons/chef.png'); /* Chef Hat */
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.floating-food-icon:nth-child(2) {
+  background-image: url('/icons/cooking-pot.png'); /* Cooking Pot */
+  top: 70%;
+  right: 15%;
+  animation-delay: 5s;
+  animation-duration: 20s;
+}
+
+.floating-food-icon:nth-child(3) {
+  background-image: url('/icons/salad.png'); /* Salad */
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 10s;
+  animation-duration: 30s;
+}
+
+.floating-food-icon:nth-child(4) {
+  background-image: url('/icons/cookie.png'); /* Cookie */
+  top: 30%;
+  right: 25%;
+  animation-delay: 15s;
+  animation-duration: 22s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, 50px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-20px, 30px) rotate(240deg);
+  }
+}
+
+@keyframes floatIcon {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 0.1;
+  }
+  25% {
+    transform: translate(100px, 50px) rotate(90deg) scale(1.1);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translate(50px, 100px) rotate(180deg) scale(0.9);
+    opacity: 0.12;
+  }
+  75% {
+    transform: translate(-50px, 50px) rotate(270deg) scale(1.05);
+    opacity: 0.09;
+  }
+}
+
+/* Main Container - Compact and Centered */
+.auth-container {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  height: auto; /* Changed from min-height */
+  min-height: 520px; /* Reduced from 600px */
+  max-height: 85vh; /* Prevent it from being too tall */
+  background: var(--bg-white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  animation: fadeInUp 0.6s ease-out;
+  position: relative;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Left Panel - Centered Form */
+.auth-left {
+  flex: 1.2;
+  padding: 40px 50px; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+
+.auth-header {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 40px;
+  margin-bottom: 30px; /* Reduced from 50px */
+  animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.auth-left h2 {
+  font-size: 28px; /* Reduced from 32px */
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.auth-left h2 span {
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+}
+
+.auth-left h2 span::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  animation: underlineGrow 1s ease-out 0.5s forwards;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+@keyframes underlineGrow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.auth-left p {
+  color: var(--text-light);
+  font-size: 14px; /* Reduced from 15px */
+  line-height: 1.5;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Professional Form Styles - Compact */
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Reduced from 24px */
+  animation: slideInUp 0.8s ease-out 0.3s both;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  position: relative;
+  width: 100%;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 14px 16px 14px 48px; /* Reduced padding */
+  border-radius: 10px; /* Reduced from 12px */
+  border: 1.5px solid var(--neutral-border);
+  font-size: 14px; /* Reduced from 15px */
+  font-weight: 400;
+  color: var(--text-dark);
+  background: var(--bg-white);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.auth-form input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Input Icons using PNGs */
+.input-icon {
+  position: absolute;
+  left: 16px; /* Adjusted */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px; /* Reduced from 20px */
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.auth-form input:focus + .input-icon {
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Custom PNG Icons for Input Fields */
+.form-group:nth-child(1) .input-icon {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077114.png'); /* User icon */
+}
+
+.form-group:nth-child(2) .input-icon {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/542/542638.png'); /* Email icon */
+}
+
+.form-group:nth-child(3) .input-icon {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/3067/3067256.png'); /* Lock icon */
+}
+
+/* Error Message */
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 14px;
+  background: rgba(231, 76, 60, 0.08);
+  border-radius: 8px;
+  border-left: 3px solid #e74c3c;
+  animation: shake 0.4s ease-in-out;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Professional Buttons - Green Theme */
+.primary-btn {
+  width: 100%;
+  padding: 15px; /* Reduced from 17px */
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: var(--bg-white);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-green);
+  letter-spacing: 0.3px;
+  margin-top: 8px;
+}
+
+.primary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+}
+
+.primary-btn:hover::before {
+  left: 100%;
+}
+
+/* Right Panel - Enhanced with Food PNG */
+.auth-right {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: var(--bg-white);
+  padding: 40px 35px; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  animation: shine 3s infinite linear;
+  z-index: 1;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.auth-right-content {
+  position: relative;
+  z-index: 2;
+  max-width: 350px; /* Reduced from 380px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Food PNG Icons - Smaller */
+.food-icon {
+  width: 70px; /* Reduced from 80px */
+  height: 70px;
+  margin-bottom: 20px; /* Reduced from 25px */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: floatIconSmall 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* Different food icons for login/signup */
+.signup-food-icon {
+  background-image: url('/icons/fried-noodles.svg'); 
+}
+
+.login-food-icon {
+  background-image: url('/icons/indian-food-plate.svg');
+}
+
+@keyframes floatIconSmall {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(5deg); /* Reduced movement */
+  }
+}
+
+.auth-right h2 {
+  font-size: 28px; /* Reduced from 36px */
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.auth-right p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 30px; /* Reduced from 40px */
+  opacity: 0.9;
+}
+
+.outline-btn {
+  padding: 12px 35px; /* Reduced */
+  border-radius: 10px;
+  border: 2px solid var(--bg-white);
+  background: transparent;
+  color: var(--bg-white);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.outline-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-white);
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.outline-btn:hover {
+  color: var(--primary-color);
+}
+
+.outline-btn:hover::before {
+  left: 0;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--bg-white);
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Guest Button Styles */
+.guest-btn {
+  width: 100%;
+  padding: 15px; /* Reduced */
+  border: none;
+  border-radius: 10px;
+  background: var(--bg-white);
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid var(--neutral-border);
+  letter-spacing: 0.3px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.guest-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border-color: var(--primary-color);
+  background: var(--soft-green-bg);
+}
+
+.guest-btn:active {
+  transform: translateY(0);
+}
+
+.guest-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Guest Icon */
+.guest-icon {
+  width: 18px;
+  height: 18px;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/1077/1077063.png'); /* Guest/User icon */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.guest-btn:hover .guest-icon {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  position: relative;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neutral-border), transparent);
+}
+
+.divider-text {
+  padding: 0 12px;
+  color: var(--text-light);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--bg-white);
+  position: relative;
+  z-index: 1;
+}
+
+/* Success Message - Green Theme */
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: var(--bg-white);
+  padding: 14px 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-out 2.5s forwards;
+  z-index: 1000;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.success-message::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/4436/4436481.png'); /* Checkmark icon */
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .auth-container {
+    flex-direction: column;
+    max-width: 500px;
+    min-height: auto;
+    max-height: none;
+  }
+  
+  .auth-left,
+  .auth-right {
+    padding: 35px 25px;
+  }
+  
+  .floating-food-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .food-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .auth-left h2,
+  .auth-right h2 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-wrapper {
+    padding: 15px;
+  }
+  
+  .auth-container {
+    border-radius: 16px;
+  }
+  
+  .auth-left,
+  .auth-right {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-wrapper {
+    padding: 10px;
+  }
+  
+  .auth-left,
+  .auth-right {
+    padding: 25px 15px;
+  }
+  
+  .auth-left h2 {
+    font-size: 24px;
+  }
+  
+  .auth-right h2 {
+    font-size: 24px;
+  }
+  
+  .auth-form input {
+    padding: 12px 14px 12px 45px;
+    font-size: 13px;
+  }
+  
+  .floating-food-icon {
+    display: none;
+  }
+  
+  .food-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+  }
+  
+  .primary-btn,
+  .guest-btn {
+    padding: 14px;
+    font-size: 13px;
+  }
+  
+  .divider-text {
+    padding: 0 10px;
+    font-size: 11px;
+  }
+  
+  .success-message {
+    top: 15px;
+    right: 15px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,488 @@
+.how {
+  width: 100%;
+  background: linear-gradient(135deg, #6df16d 0%, #e8f7e8 100%); 
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
+  z-index: 1;
+  border-radius: 40px 40px 40px 40px; /* Rounded edges */
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 10px 40px rgba(46, 204, 113, 0.1);
+}
+
+.how-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 40px; /* Match parent border-radius */
+}
+
+.how-bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.25;
+  animation: howBlobFloat 40s infinite linear;
+}
+
+.how-bg-blob-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(162, 232, 162, 0.25), rgba(130, 224, 130, 0.15));
+  top: -300px;
+  left: -200px;
+  animation-delay: 0s;
+  animation-duration: 45s;
+}
+
+.how-bg-blob-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(88, 214, 141, 0.2), rgba(72, 187, 120, 0.15));
+  bottom: -200px;
+  right: -150px;
+  animation-delay: -20s;
+  animation-duration: 50s;
+  animation-direction: reverse;
+}
+
+.how-bg-blob-3 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.18), rgba(39, 174, 96, 0.12));
+  top: 30%;
+  left: 60%;
+  animation-delay: -35s;
+  animation-duration: 55s;
+}
+
+.how-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 64px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.how-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #1a2c1a;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.3s forwards;
+}
+
+.how-title-highlight {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+
+.how-title-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  border-radius: 2px;
+  transform: scaleX(0);
+  animation: underlineExpand 1s ease-out 1s forwards;
+}
+
+.how-subtitle {
+  font-size: 1.25rem;
+  color: #3a5a3a;
+  max-width: 700px;
+  margin: 0 auto 5rem;
+  line-height: 1.7;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.5s forwards;
+}
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  position: relative;
+}
+
+.how-steps::before {
+  content: '';
+  position: absolute;
+  top: 80px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(46, 204, 113, 0.2), 
+    rgba(46, 204, 113, 0.4), 
+    rgba(46, 204, 113, 0.2), 
+    transparent
+  );
+  z-index: 1;
+}
+
+.how-step {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  border: 1px solid rgba(46, 204, 113, 0.15);
+  box-shadow: 
+    0 10px 40px rgba(46, 204, 113, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.step-animate-1 { animation: stepAppear 0.8s ease-out 0.7s forwards; }
+.step-animate-2 { animation: stepAppear 0.8s ease-out 0.9s forwards; }
+.step-animate-3 { animation: stepAppear 0.8s ease-out 1.1s forwards; }
+
+.how-step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(46, 204, 113, 0.03), 
+    rgba(39, 174, 96, 0.02)
+  );
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+.how-step::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.8)
+  );
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.how-step:hover {
+  transform: translateY(-12px);
+  border-color: rgba(46, 204, 113, 0.3);
+  box-shadow: 
+    0 25px 60px rgba(46, 204, 113, 0.15),
+    0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.how-step:hover::after {
+  opacity: 1;
+}
+
+.how-step:hover .step-number {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.how-step:hover .step-icon {
+  transform: translateY(-5px) scale(1.1);
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.12);
+}
+
+.step-number {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1.8rem;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #2ecc71,
+    #27ae60
+  );
+  color: #ffffff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 1.8rem;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+  box-shadow: 
+    0 10px 30px rgba(46, 204, 113, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.step-number-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.step-number-glow {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(
+    135deg,
+    #2ecc71,
+    #48bb78,
+    #2ecc71
+  );
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0.4;
+  z-index: 1;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.step-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(46, 204, 113, 0.08);
+  border-radius: 16px;
+  color: #27ae60;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(46, 204, 113, 0.1);
+}
+
+.step-icon svg {
+  stroke: currentColor;
+}
+
+.how-step h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #1a2c1a;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  z-index: 2;
+  position: relative;
+}
+
+.how-step p {
+  font-size: 1.05rem;
+  color: #4a635a;
+  line-height: 1.6;
+  margin-bottom: 0;
+  z-index: 2;
+  position: relative;
+}
+
+/* Animations */
+@keyframes howBlobFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(60px, -40px) rotate(120deg) scale(1.1);
+  }
+  66% {
+    transform: translate(-40px, 50px) rotate(240deg) scale(0.9);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes underlineExpand {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes stepAppear {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+  .how {
+    max-width: 95%;
+  }
+  
+  .how-inner {
+    padding: 0 48px;
+    max-width: 1200px;
+  }
+  
+  .how-steps {
+    gap: 2rem;
+  }
+  
+  .how-step {
+    padding: 2.5rem 1.8rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .how {
+    padding: 6rem 0;
+    margin-top: 30px;
+    border-radius: 30px;
+    max-width: 100%;
+  }
+  
+  .how-background {
+    border-radius: 30px;
+  }
+  
+  .how-steps {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  
+  .how-steps::before {
+    display: none;
+  }
+  
+  .how-title {
+    font-size: 2.6rem;
+  }
+  
+  .how-subtitle {
+    font-size: 1.15rem;
+    margin-bottom: 4rem;
+    padding: 0 1rem;
+  }
+  
+  .how-step {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .how {
+    padding: 5rem 0;
+    margin-top: 20px;
+    border-radius: 24px;
+  }
+  
+  .how-background {
+    border-radius: 24px;
+  }
+  
+  .how-inner {
+    padding: 0 32px;
+  }
+  
+  .how-title {
+    font-size: 2.3rem;
+  }
+  
+  .how-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 3.5rem;
+  }
+  
+  .how-step {
+    padding: 2rem 1.5rem;
+  }
+  
+  .step-number {
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
+  }
+  
+  .step-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .how {
+    padding: 4rem 0;
+    margin-top: 15px;
+    border-radius: 20px;
+  }
+  
+  .how-background {
+    border-radius: 20px;
+  }
+  
+  .how-inner {
+    padding: 0 24px;
+  }
+  
+  .how-title {
+    font-size: 2rem;
+  }
+  
+  .how-subtitle {
+    font-size: 1rem;
+    margin-bottom: 3rem;
+  }
+  
+  .how-step h3 {
+    font-size: 1.2rem;
+  }
+  
+  .how-step p {
+    font-size: 0.95rem;
+  }
+}
