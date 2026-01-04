@@ -18,6 +18,7 @@ Missing ingredients with grocery redirection
 Responsive and clean UI
 
 🛠 Tech Stack
+
 Frontend: React.js, HTML, CSS, JavaScript
 
 Backend: Node.js, Express.js
@@ -29,22 +30,28 @@ Database: MongoDB, Mongoose
 Tools: Git, GitHub, VS Code, MongoDB Compass
 
 🚀 Running the Project
-# Backend
+Backend
+
 cd server
+
 npm install
+
 npm run dev
 
-# Frontend
+Frontend
+
 cd client
+
 npm install
+
 npm run dev
 
 🌐 Deployment
+
 Deployment is in progress.
 Frontend will be hosted on Netlify and backend on Render.
-👩‍💻 Author
-Nikita Pal
 
 👩‍💻 Author
 
 Nikita Pal
+
