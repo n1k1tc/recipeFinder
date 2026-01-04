@@ -3,6 +3,7 @@ RecipeFinder 🍽️
 RecipeFinder is a full-stack MERN web application that helps users discover recipes, search by ingredients, filter results, save favorites, and view missing ingredients with external grocery links.
 This project was developed as part of my 5th semester internship subject.
 
+
 ✨ Features
 
 User authentication (JWT based)
@@ -17,6 +18,7 @@ Missing ingredients with grocery redirection
 
 Responsive and clean UI
 
+
 🛠 Tech Stack
 
 Frontend: React.js, HTML, CSS, JavaScript
@@ -29,8 +31,13 @@ Database: MongoDB, Mongoose
 
 Tools: Git, GitHub, VS Code, MongoDB Compass
 
+
+
 🚀 Running the Project
-Backend
+
+
+⚙️ Backend
+
 
 cd server
 
@@ -38,7 +45,9 @@ npm install
 
 npm run dev
 
-Frontend
+
+🎨 Frontend
+
 
 cd client
 
@@ -48,8 +57,11 @@ npm run dev
 
 🌐 Deployment
 
+
 Deployment is in progress.
+
 Frontend will be hosted on Netlify and backend on Render.
+
 
 👩‍💻 Author
 
