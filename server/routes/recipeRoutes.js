@@ -1,10 +1,12 @@
 const express = require("express");
 const Recipe = require("../models/Recipe");
+const verifyToken = require("../middleware/verifyToken");
+const requireAdmin = require("../middleware/requireAdmin");
 
 const router = express.Router();
 
 // POST - Create new recipe
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, requireAdmin, async (req, res) => {
   try {
     const recipe = new Recipe(req.body);
     await recipe.save();
@@ -242,6 +244,52 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ 
       message: "Invalid recipe ID",
       error: error.message 
+    });
+  }
+});
+
+// PUT - Update recipe by ID (Admin)
+router.put("/:id", verifyToken, requireAdmin, async (req, res) => {
+  try {
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedRecipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    res.json({
+      message: "Recipe updated successfully",
+      recipe: updatedRecipe
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Failed to update recipe",
+      error: error.message
+    });
+  }
+});
+
+// DELETE - Remove recipe by ID (Admin)
+router.delete("/:id", verifyToken, requireAdmin, async (req, res) => {
+  try {
+    const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
+
+    if (!deletedRecipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    res.json({
+      message: "Recipe deleted successfully",
+      recipe: deletedRecipe
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Failed to delete recipe",
+      error: error.message
     });
   }
 });

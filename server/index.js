@@ -19,7 +19,7 @@ mongoose
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/recipes", recipeRoutes);
-app.use("/api/user", userRoutes); // ADD THIS
+app.use("/api/user", userRoutes);
 
 // Test route
 app.get("/api/test", (req, res) => {

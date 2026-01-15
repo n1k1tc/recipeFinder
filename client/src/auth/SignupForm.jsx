@@ -16,6 +16,7 @@ export const SignupForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [isGuestLoading, setIsGuestLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // NEW
 
   const handleChange = (e) => {
     setFormData({
@@ -30,6 +31,11 @@ export const SignupForm = () => {
     if (!trimmed) return false;
     const nameRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
     return nameRegex.test(trimmed);
+  };
+
+  // NEW: Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -114,9 +120,9 @@ export const SignupForm = () => {
               <div className="input-icon"></div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group password-group">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password (min. 6 characters)"
                 value={formData.password}
@@ -125,6 +131,18 @@ export const SignupForm = () => {
                 minLength="6"
               />
               <div className="input-icon"></div>
+              <button 
+                type="button"
+                className="password-toggle-btn"
+                onClick={togglePasswordVisibility}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <span className="password-toggle-icon show-icon"></span>
+                ) : (
+                  <span className="password-toggle-icon hide-icon"></span>
+                )}
+              </button>
             </div>
 
             {error && <div className="error-message">{error}</div>}

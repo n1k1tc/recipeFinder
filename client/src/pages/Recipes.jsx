@@ -6,7 +6,8 @@ import {
   Clock, 
   Users, 
   TrendingUp,
-  ChefHat
+  ChefHat,
+  ArrowLeft
 } from "lucide-react";
 import "./Recipes.css";
 
@@ -35,7 +36,25 @@ const Recipes = () => {
   const processedNavigationRef = useRef(false); // Prevent double processing
 
   // ============================================
-  // HELPER FUNCTIONS
+  // NEW: Go Back to Recipe Function
+  // ============================================
+  const handleGoBackToRecipe = () => {
+    if (!location.state?.cameFromRecipeDetails) return;
+    
+    // Navigate back to the recipe with preserved state
+    navigate(`/recipes/${location.state.sourceRecipeId}`, {
+      state: {
+        preservedCheckedIngredients: location.state.sourceCheckedIngredients,
+        returnFilters: location.state.returnFilters || {},
+        returnSearch: location.state.returnSearch || '',
+        // Pass along any other needed state
+        cameFromRecipes: true // Optional flag for RecipeDetails
+      }
+    });
+  };
+
+  // ============================================
+  // HELPER FUNCTIONS (remain the same)
   // ============================================
 
   const updateURLWithFilters = useCallback(
@@ -193,6 +212,7 @@ const Recipes = () => {
   // EFFECT 1: Handle navigation state - RUNS FIRST
   useEffect(() => {
     console.log("🚨 EFFECT 1: Checking for navigation data");
+    console.log("Location state:", location.state);
     
     // Prevent double processing
     if (processedNavigationRef.current) {
@@ -204,6 +224,7 @@ const Recipes = () => {
     if (location.state?.filteredRecipes && Array.isArray(location.state.filteredRecipes)) {
       console.log("🎯 NAVIGATION DETECTED!");
       console.log("Filtered recipes count:", location.state.filteredRecipes.length);
+      console.log("Came from RecipeDetails:", location.state.cameFromRecipeDetails);
       
       // CRITICAL: Set refs synchronously
       processedNavigationRef.current = true;
@@ -227,10 +248,14 @@ const Recipes = () => {
         setSearchParams({ search: searchText }, { replace: true });
       }
       
-      // Clear navigation state but keep return info
+      // Clear navigation state but keep return info and RecipeDetails info
       navigate(location.pathname, {
         replace: true,
         state: {
+          cameFromRecipeDetails: location.state.cameFromRecipeDetails || false,
+          sourceRecipeId: location.state.sourceRecipeId,
+          sourceRecipeName: location.state.sourceRecipeName,
+          sourceCheckedIngredients: location.state.sourceCheckedIngredients,
           returnFilters: location.state.returnFilters || {},
           returnSearch: location.state.returnSearch || '',
         }
@@ -448,6 +473,19 @@ const Recipes = () => {
         <p className="page-subtitle">Discover delicious recipes to cook today</p>
       </div>
 
+      {/* NEW: Go Back to Recipe Button */}
+      {location.state?.cameFromRecipeDetails && location.state.sourceRecipeName && (
+        <div className="recipe-back-button-container">
+          <button 
+            onClick={handleGoBackToRecipe}
+            className="btn btn-recipe-back"
+          >
+            <ArrowLeft size={16} />
+            Back to Recipe: {location.state.sourceRecipeName}
+          </button>
+        </div>
+      )}
+
       <SearchFilter
         onSearch={handleSearch}
         onFilterChange={handleFilterChange}
@@ -474,6 +512,20 @@ const Recipes = () => {
               <span className="count">{filteredRecipes.length}</span>
               <span className="label">recipes found</span>
             </div>
+            
+            {/* NEW: Show match info if available */}
+            {location.state?.matchInfo && (
+              <div className="match-info-badge">
+                <span className="complete-matches">
+                  {location.state.completeMatches} exact matches
+                </span>
+                {location.state.partialMatches > 0 && (
+                  <span className="partial-matches">
+                    • {location.state.partialMatches} partial matches
+                  </span>
+                )}
+              </div>
+            )}
             
             {!searchParams.get("search") && 
              filteredRecipes.length > DEFAULT_DISPLAY_LIMIT && 

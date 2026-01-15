@@ -644,7 +644,6 @@ body {
 }
 
 /* ===== Alternative Prominent Style ===== */
-/* If you want a more solid button */
 .show-all-btn.prominent {
   background-color: #2E8B57; /* Primary Green */
   color: #FFFFFF;
@@ -655,4 +654,159 @@ body {
   background-color: #26734D; /* Primary Dark */
   border-color: #26734D;
   color: #FFFFFF;
+}
+
+/* ===== Go Back to Recipe Button ===== */
+.recipe-back-button-container {
+  margin: 1rem 0 1.5rem 0;
+  padding: 0 0.25rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-recipe-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+  width: auto;
+  min-width: 300px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.btn-recipe-back:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-recipe-back:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Responsive design for the button */
+@media (max-width: 768px) {
+  .btn-recipe-back {
+    width: 100%;
+    min-width: auto;
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* ===== Match Info Badge ===== */
+.match-info-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--primary-light);
+  border: 1px solid rgba(46, 139, 87, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  color: var(--primary-dark);
+  font-weight: 500;
+}
+
+.complete-matches {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.partial-matches {
+  color: var(--warning);
+  font-weight: 500;
+}
+
+/* Update results-header for better spacing with new elements */
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  padding: 1.25rem;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.results-count {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.match-info-badge {
+  order: 1;
+  margin-right: auto;
+  margin-left: 1rem;
+}
+
+.show-all-btn {
+  order: 2;
+}
+
+.clear-filters-btn {
+  order: 3;
+}
+
+@media (max-width: 768px) {
+  .results-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .results-count {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .match-info-badge,
+  .show-all-btn,
+  .clear-filters-btn {
+    width: 100%;
+    text-align: center;
+    margin: 0.25rem 0;
+  }
+  
+  .match-info-badge {
+    order: 2;
+  }
+  
+  .show-all-btn {
+    order: 3;
+  }
+  
+  .clear-filters-btn {
+    order: 4;
+  }
 }

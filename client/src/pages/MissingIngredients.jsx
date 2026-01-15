@@ -13,9 +13,13 @@ const MissingIngredients = () => {
     missingIngredients = [],
     recipeName = "Recipe",
     recipeId = null,
+    // IMPORTANT: Get preserved checked ingredients from navigation
+    preservedCheckedIngredients = [],
+    returnFilters = {},
+    returnSearch = ""
   } = location.state || {};
 
-  // Function to clean ingredient names (remove everything after first comma)
+  // FUNCTION 1: Clean ingredient names (remove everything after first comma)
   const cleanIngredientName = (ingredient) => {
     // Remove everything after the first comma (including the comma)
     const cleaned = ingredient.split(',')[0].trim();
@@ -42,7 +46,7 @@ const MissingIngredients = () => {
     },
   ];
 
-  // Handle grocery link click with confirmation modal
+  // FUNCTION 2: Handle grocery link click with confirmation modal
   const handleGroceryLinkClick = (e, service, ingredient, url) => {
     e.preventDefault();
     setModalData({
@@ -53,18 +57,40 @@ const MissingIngredients = () => {
     setShowModal(true);
   };
 
-  // Handle modal proceed (open external link)
+  // FUNCTION 3: Handle modal proceed (open external link)
   const handleProceed = () => {
     window.open(modalData.url, '_blank', 'noopener,noreferrer');
     setShowModal(false);
   };
 
-  // Handle modal cancel
+  // FUNCTION 4: Handle modal cancel
   const handleCancel = () => {
     setShowModal(false);
   };
 
-  // Handle empty state (no missing ingredients)
+  // FUNCTION 5: Navigate back to RecipeDetails with preserved state
+  const handleBackToRecipeDetails = () => {
+    navigate(`/recipes/${recipeId}`, {
+      state: {
+        // CRITICAL: Pass back the preserved checked ingredients
+        preservedCheckedIngredients: preservedCheckedIngredients,
+        returnFilters: returnFilters,
+        returnSearch: returnSearch
+      }
+    });
+  };
+
+  // FUNCTION 6: Navigate to recipes page
+  const handleBackToRecipes = () => {
+    navigate("/recipes", {
+      state: {
+        returnFilters: returnFilters,
+        returnSearch: returnSearch
+      }
+    });
+  };
+
+  // RENDER STATE 1: Handle empty state (no missing ingredients)
   if (!missingIngredients || missingIngredients.length === 0) {
     return (
       <div className="missing-ingredients-container empty-state">
@@ -77,21 +103,21 @@ const MissingIngredients = () => {
         <div className="empty-actions">
           {recipeId ? (
             <button
-              onClick={() => navigate(`/recipes/${recipeId}`)}
+              onClick={handleBackToRecipeDetails}
               className="btn btn-primary"
             >
               ← Back to Recipe Details
             </button>
           ) : (
             <button
-              onClick={() => navigate("/recipes")}
+              onClick={handleBackToRecipes}
               className="btn btn-primary"
             >
               ← Back to All Recipes
             </button>
           )}
           <button
-            onClick={() => navigate("/recipes")}
+            onClick={handleBackToRecipes}
             className="btn btn-secondary"
           >
             Browse More Recipes →
@@ -101,7 +127,7 @@ const MissingIngredients = () => {
     );
   }
 
-  // Handle case where user refreshes page and loses state
+  // RENDER STATE 2: Handle case where user refreshes page and loses state
   if (location.state === undefined) {
     return (
       <div className="missing-ingredients-container error-state">
@@ -123,7 +149,7 @@ const MissingIngredients = () => {
     );
   }
 
-  // Copy shopping list to clipboard
+  // FUNCTION 7: Copy shopping list to clipboard
   const copyShoppingList = () => {
     const list = missingIngredients.map(cleanIngredientName).join(", ");
     navigator.clipboard
@@ -146,6 +172,7 @@ const MissingIngredients = () => {
       });
   };
 
+  // ===== MAIN RENDER =====
   return (
     <>
       {/* External Link Confirmation Modal - COMPACT VERSION */}
@@ -204,19 +231,19 @@ const MissingIngredients = () => {
           <p className="page-subtitle">
             For recipe: <strong>{recipeName}</strong>
           </p>
-         <div className="disclaimer">
-  <span className="disclaimer-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="12" y1="8" x2="12" y2="12"></line>
-      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-    </svg>
-  </span>
-  <p>
-    These links open external grocery services in new tabs. 
-    <span className="disclaimer-note"> (Clicking will show a confirmation)</span>
-  </p>
-</div>
+          <div className="disclaimer">
+            <span className="disclaimer-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </span>
+            <p>
+              These links open external grocery services in new tabs. 
+              <span className="disclaimer-note"> (Clicking will show a confirmation)</span>
+            </p>
+          </div>
         </div>
 
         {/* Shopping List Summary */}
@@ -286,14 +313,14 @@ const MissingIngredients = () => {
           <div className="action-buttons">
             {recipeId ? (
               <button
-                onClick={() => navigate(`/recipes/${recipeId}`)}
+                onClick={handleBackToRecipeDetails}
                 className="btn btn-outline"
               >
                 ← Back to Recipe Details
               </button>
             ) : (
               <button
-                onClick={() => navigate("/recipes")}
+                onClick={handleBackToRecipes}
                 className="btn btn-outline"
               >
                 ← Back to All Recipes
@@ -301,7 +328,7 @@ const MissingIngredients = () => {
             )}
 
             <button
-              onClick={() => navigate("/recipes")}
+              onClick={handleBackToRecipes}
               className="btn btn-primary"
             >
               Browse More Recipes →

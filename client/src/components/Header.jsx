@@ -1,37 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { 
-  FaHome, 
-  FaUtensils, 
-  FaInfoCircle, 
-  FaHistory, 
-  FaHeart, 
-  FaUser, 
+import {
+  FaHome,
+  FaUtensils,
+  FaInfoCircle,
+  FaHistory,
+  FaHeart,
+  FaUser,
   FaSignOutAlt,
   FaBars,
-  FaTimes
+  FaTimes,
+  FaCrown
 } from "react-icons/fa";
 import "./Header.css";
 import logo from "../assets/logo.png";
 
+const ADMIN_EMAIL = "nikitapal580@gmail.com";
+
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const name = localStorage.getItem("userName");
+    const email = localStorage.getItem("userEmail");
 
     if (token) {
       setIsLoggedIn(true);
       setUserName(name || "User");
+      setUserEmail(email || "");
     } else {
       setIsLoggedIn(false);
       setUserName("");
+      setUserEmail("");
     }
   }, [location]);
 
@@ -45,22 +53,44 @@ const Header = () => {
     localStorage.clear();
     setIsLoggedIn(false);
     setUserName("");
+    setUserEmail("");
     setMenuOpen(false);
     navigate("/login");
   };
 
   const closeMenu = () => setMenuOpen(false);
 
-  const navItems = [
+  const isAdmin = isLoggedIn && userEmail === ADMIN_EMAIL;
+
+  // Core navigation items (always visible)
+  const coreNavItems = [
     { path: "/", label: "Home", icon: <FaHome /> },
     { path: "/recipes", label: "Recipes", icon: <FaUtensils /> },
-    { path: "/about", label: "About", icon: <FaInfoCircle /> },
   ];
 
-  const loggedInNavItems = [
-    { path: "/recent-searches", label: "Recent Searches", icon: <FaHistory /> },
-    { path: "/favorites", label: "Favorites", icon: <FaHeart className="favorite-icon" /> },
+  // User-specific navigation items (only for logged-in users)
+  const userNavItems = [
+    { 
+      path: "/recent-searches", 
+      label: "Recent", 
+      icon: <FaHistory />,
+      fullLabel: "Recent Searches"
+    },
+    { 
+      path: "/favorites", 
+      label: "Favorites", 
+      icon: <FaHeart className="favorite-icon" />,
+      fullLabel: "Favorites"
+    },
   ];
+
+  // Admin navigation item
+  const adminNavItem = {
+    path: "/admin",
+    label: "Admin",
+    icon: <FaCrown className="admin-icon" />,
+    fullLabel: "Admin Panel"
+  };
 
   return (
     <>
@@ -71,14 +101,18 @@ const Header = () => {
             <div className="logo">
               <img src={logo} alt="RecipeFinder" className="logo-img" />
               <span className="logo-text">RecipeFinder</span>
+              {/* Guest Badge */}
               {!isLoggedIn && <span className="guest-badge">Guest</span>}
+              {/* Admin Crown Badge */}
+              {isAdmin && <span className="admin-crown-badge"><FaCrown /> Admin</span>}
             </div>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="nav-desktop">
             <ul className="nav-list">
-              {navItems.map((item) => (
+              {/* Core Navigation */}
+              {coreNavItems.map((item) => (
                 <li key={item.path} className="nav-item">
                   <Link
                     to={item.path}
@@ -91,8 +125,22 @@ const Header = () => {
                   </Link>
                 </li>
               ))}
-              
-              {isLoggedIn && loggedInNavItems.map((item) => (
+
+              {/* About Link (only for desktop) */}
+              <li className="nav-item">
+                <Link
+                  to="/about"
+                  className={`nav-link ${
+                    location.pathname === "/about" ? "active" : ""
+                  }`}
+                >
+                  <FaInfoCircle />
+                  <span>About</span>
+                </Link>
+              </li>
+
+              {/* User Navigation (logged in users) */}
+              {isLoggedIn && userNavItems.map((item) => (
                 <li key={item.path} className="nav-item">
                   <Link
                     to={item.path}
@@ -105,6 +153,21 @@ const Header = () => {
                   </Link>
                 </li>
               ))}
+
+              {/* Admin Link (with crown icon) */}
+              {isAdmin && (
+                <li className="nav-item">
+                  <Link
+                    to={adminNavItem.path}
+                    className={`nav-link admin-nav-link ${
+                      location.pathname === adminNavItem.path ? "active" : ""
+                    }`}
+                  >
+                    {adminNavItem.icon}
+                    <span>{adminNavItem.label}</span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
 
@@ -114,7 +177,9 @@ const Header = () => {
               <div className="user-menu">
                 <div className="user-info">
                   <FaUser className="user-icon" />
-                  <span className="user-name">{userName}</span>
+                  <div className="user-details">
+                    <span className="user-name">{userName}</span>
+                  </div>
                 </div>
                 <button className="logout-btn" onClick={handleLogout}>
                   <FaSignOutAlt /> Logout
@@ -143,13 +208,20 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile Navigation Menu */}
+      {/* Mobile Navigation */}
       <nav className={`mobile-nav ${menuOpen ? "open" : ""}`}>
         <div className="mobile-nav-header">
           {isLoggedIn ? (
             <div className="mobile-user-info">
               <FaUser />
-              <span>{userName}</span>
+              <div className="mobile-user-details">
+                <span className="mobile-user-name">{userName}</span>
+                {isAdmin && (
+                  <span className="mobile-admin-badge">
+                    <FaCrown /> Admin
+                  </span>
+                )}
+              </div>
             </div>
           ) : (
             <span>Menu</span>
@@ -157,59 +229,89 @@ const Header = () => {
         </div>
         
         <ul className="mobile-nav-list">
-          {navItems.map((item) => (
+          {/* Core Navigation */}
+          {coreNavItems.map((item) => (
             <li key={item.path}>
               <Link
                 to={item.path}
+                onClick={closeMenu}
                 className={`mobile-nav-link ${
                   location.pathname === item.path ? "active" : ""
                 }`}
-                onClick={closeMenu}
               >
                 {item.icon}
                 <span>{item.label}</span>
               </Link>
             </li>
           ))}
-          
-          {isLoggedIn && loggedInNavItems.map((item) => (
+
+          {/* About Link */}
+          <li>
+            <Link
+              to="/about"
+              onClick={closeMenu}
+              className={`mobile-nav-link ${
+                location.pathname === "/about" ? "active" : ""
+              }`}
+            >
+              <FaInfoCircle />
+              <span>About</span>
+            </Link>
+          </li>
+
+          {/* User Navigation */}
+          {isLoggedIn && userNavItems.map((item) => (
             <li key={item.path}>
               <Link
                 to={item.path}
+                onClick={closeMenu}
                 className={`mobile-nav-link ${
                   location.pathname === item.path ? "active" : ""
                 }`}
-                onClick={closeMenu}
               >
                 {item.icon}
-                <span>{item.label}</span>
+                <span>{item.fullLabel}</span>
               </Link>
             </li>
           ))}
+
+          {/* Admin Link */}
+          {isAdmin && (
+            <li>
+              <Link
+                to={adminNavItem.path}
+                onClick={closeMenu}
+                className={`mobile-nav-link admin-mobile-link ${
+                  location.pathname === adminNavItem.path ? "active" : ""
+                }`}
+              >
+                {adminNavItem.icon}
+                <span>{adminNavItem.fullLabel}</span>
+              </Link>
+            </li>
+          )}
         </ul>
-        
-        <div className="mobile-auth-actions">
-          {isLoggedIn ? (
+
+        {/* Mobile Auth Actions */}
+        {isLoggedIn ? (
+          <div className="mobile-auth-actions">
             <button className="mobile-logout-btn" onClick={handleLogout}>
               <FaSignOutAlt /> Logout
             </button>
-          ) : (
-            <>
-              <Link to="/login" className="mobile-login-btn" onClick={closeMenu}>
-                Login
-              </Link>
-              <Link to="/signup" className="mobile-signup-btn" onClick={closeMenu}>
-                Get Started
-              </Link>
-            </>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="mobile-auth-actions">
+            <Link to="/login" className="mobile-login-btn" onClick={closeMenu}>
+              Login
+            </Link>
+            <Link to="/signup" className="mobile-signup-btn" onClick={closeMenu}>
+              Get Started
+            </Link>
+          </div>
+        )}
       </nav>
-      
-      {/* Overlay for mobile menu */}
-      {menuOpen && (
-        <div className="mobile-overlay" onClick={closeMenu}></div>
-      )}
+
+      {menuOpen && <div className="mobile-overlay" onClick={closeMenu}></div>}
     </>
   );
 };

@@ -1,11 +1,10 @@
-// server/routes/userRoutes.js - COMPLETE VERSION WITH ALL ROUTES
 const express = require("express");
 const User = require("../models/User");
 const Recipe = require("../models/Recipe");
 
 const router = express.Router();
 
-// 🔧 MIDDLEWARE: Extract user from JWT
+// MIDDLEWARE: Extract user from JWT
 const authMiddleware = async (req, res, next) => {
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");

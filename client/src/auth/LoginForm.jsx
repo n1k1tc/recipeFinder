@@ -9,17 +9,23 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // NEW
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (error) setError("");
+  };
+
+  // NEW: Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -29,15 +35,14 @@ export const LoginForm = () => {
 
     try {
       const res = await axios.post(`${API}/api/auth/login`, formData);
-      
+
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("userEmail", res.data.user.email);
       localStorage.setItem("userName", res.data.user.name);
-      
+      localStorage.setItem("userRole", res.data.user.role);
       setTimeout(() => {
         navigate("/recipes");
       }, 800);
-      
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {
@@ -53,7 +58,7 @@ export const LoginForm = () => {
         <div className="floating-food-icon"></div>
         <div className="floating-food-icon"></div>
       </div>
-      
+
       <div className="auth-container">
         <div className="auth-left">
           <div className="auth-header">
@@ -76,9 +81,9 @@ export const LoginForm = () => {
               <div className="input-icon"></div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group password-group">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 value={formData.password}
@@ -86,15 +91,23 @@ export const LoginForm = () => {
                 required
               />
               <div className="input-icon"></div>
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={togglePasswordVisibility}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <span className="password-toggle-icon show-icon"></span>
+                ) : (
+                  <span className="password-toggle-icon hide-icon"></span>
+                )}
+              </button>
             </div>
 
             {error && <div className="error-message">{error}</div>}
-            
-            <button 
-              className="primary-btn" 
-              type="submit"
-              disabled={isLoading}
-            >
+
+            <button className="primary-btn" type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <span className="loading-spinner"></span>
@@ -112,13 +125,10 @@ export const LoginForm = () => {
             <div className="food-icon login-food-icon"></div>
             <h2>New to RecipeFinder?</h2>
             <p>
-              Create an account to access thousands of recipes 
-              and find where to buy missing ingredients
+              Create an account to access thousands of recipes and find where to
+              buy missing ingredients
             </p>
-            <button
-              className="outline-btn"
-              onClick={() => navigate("/signup")}
-            >
+            <button className="outline-btn" onClick={() => navigate("/signup")}>
               CREATE ACCOUNT
             </button>
           </div>
